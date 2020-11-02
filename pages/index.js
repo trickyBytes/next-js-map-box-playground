@@ -6,7 +6,7 @@ import ReactMapGL, {
   FullscreenControl,
   Marker,
   Source,
-  Layer
+  Layer,
 } from "react-map-gl";
 import { fromJS } from "immutable";
 
@@ -25,10 +25,10 @@ const Map = () => {
   const [viewport] = React.useState({
     width: 1520,
     height: 720,
-    latitude: 51.509865,
-    longitude: -0.118092,
-    mapStyle: "mapbox://styles/mapbox/streets-v11",
-    zoom: 14,
+    latitude: 51.4534,
+    longitude: -2.5856,
+    // mapStyle: "mapbox://styles/mapbox/streets-v12",
+    zoom: 13,
     scrollZoom: true,
   });
 
@@ -44,15 +44,22 @@ const Map = () => {
         {...viewport}
         mapboxApiAccessToken="pk.eyJ1IjoiYW50b25pdmFub3Zvdm8iLCJhIjoiY2tmcDJrN2RuMHd4OTJyczU3NHR4a2ZzdiJ9.KC8a5yBJXo8O6SND-CmFsA"
       >
-        <Source id="my-data" type="raster" tileSize={256} tiles={[
-          'http://tile.stamen.com/toner/{z}/{x}/{y}.png'
-        ]}>
+        <Source
+          id="my-data"
+          type="vector"
+          minzoom={6}
+          maxzoom={14}
+          tiles={["https://d25uarhxywzl1j.cloudfront.net/v0.1/{z}/{x}/{y}.mvt"]}
+        >
           <Layer
             id="point"
-            type="raster"
+            type="line"
             source="my-data"
-            minzoom={0}
-            maxzoom={22}
+            source-layer="mapillary-sequences"
+            layout={{
+              "line-cap": "round",
+              "line-join": "round",
+            }}
           />
         </Source>
       </ReactMapGL>
