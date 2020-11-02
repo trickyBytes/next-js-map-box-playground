@@ -6,7 +6,7 @@ import ReactMapGL, {
   FullscreenControl,
   Marker,
   Source,
-  Layer,
+  Layer
 } from "react-map-gl";
 import { fromJS } from "immutable";
 
@@ -28,7 +28,7 @@ const Map = () => {
     latitude: 51.509865,
     longitude: -0.118092,
     mapStyle: "mapbox://styles/mapbox/streets-v11",
-    zoom: 11,
+    zoom: 14,
     scrollZoom: true,
   });
 
@@ -44,14 +44,15 @@ const Map = () => {
         {...viewport}
         mapboxApiAccessToken="pk.eyJ1IjoiYW50b25pdmFub3Zvdm8iLCJhIjoiY2tmcDJrN2RuMHd4OTJyczU3NHR4a2ZzdiJ9.KC8a5yBJXo8O6SND-CmFsA"
       >
-        <Source id="my-data" type="geojson" data={geojson}>
+        <Source id="my-data" type="raster" tileSize={256} tiles={[
+          'http://tile.stamen.com/toner/{z}/{x}/{y}.png'
+        ]}>
           <Layer
             id="point"
-            type="circle"
-            paint={{
-              "circle-radius": 10,
-              "circle-color": "#007cbf",
-            }}
+            type="raster"
+            source="my-data"
+            minzoom={0}
+            maxzoom={22}
           />
         </Source>
       </ReactMapGL>
