@@ -1,65 +1,68 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { Component } from "react";
+
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
+import ReactMapGL, {
+  FullscreenControl,
+  Marker,
+  Source,
+  Layer,
+} from "react-map-gl";
+import { fromJS } from "immutable";
+
+const geojson = {
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: { type: "Point", coordinates: [-0.1119, 51.5104] },
+    },
+  ],
+};
+
+const Map = () => {
+  const container = React.useRef(null);
+  const [viewport] = React.useState({
+    width: 1520,
+    height: 720,
+    latitude: 51.509865,
+    longitude: -0.118092,
+    mapStyle: "mapbox://styles/mapbox/streets-v11",
+    zoom: 11,
+    scrollZoom: true,
+  });
+
+  return (
+    <div>
+      <Head>
+        <link
+          href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+          rel="stylesheet"
+        />
+      </Head>
+      <ReactMapGL
+        {...viewport}
+        mapboxApiAccessToken="pk.eyJ1IjoiYW50b25pdmFub3Zvdm8iLCJhIjoiY2tmcDJrN2RuMHd4OTJyczU3NHR4a2ZzdiJ9.KC8a5yBJXo8O6SND-CmFsA"
+      >
+        <Source id="my-data" type="geojson" data={geojson}>
+          <Layer
+            id="point"
+            type="circle"
+            paint={{
+              "circle-radius": 10,
+              "circle-color": "#007cbf",
+            }}
+          />
+        </Source>
+      </ReactMapGL>
+    </div>
+  );
+};
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <Map />
     </div>
-  )
+  );
 }
